@@ -16,6 +16,11 @@ RUN cd /tmp;git clone https://github.com/kti/python-netfilterqueue.git \
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tshark wireshark
 
 RUN pip3 install --process-dependency-links polymorph
+
+# PATCH for enable spoof command
+COPY utils.patch /usr/local/lib/python3.6/dist-packages/polymorph/
+RUN cd /usr/local/lib/python3.6/dist-packages/polymorph/; patch < utils.patch
+
 VOLUME ["/var/develop"]
 
 ENTRYPOINT ["byobu"]
