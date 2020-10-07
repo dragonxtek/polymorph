@@ -4,6 +4,8 @@ MAINTAINER nicolas.boettcher@mail.udp.cl
 WORKDIR /var
 
 ENV PYTHONIOENCODING=utf8
+RUN sed -i 's/archive\.ubuntu\.com/old-releases\.ubuntu\.com/' /etc/apt/sources.list
+RUN sed -i '/security\.ubuntu\.com/d' /etc/apt/sources.list
 
 RUN apt-get -yqq update \
     && apt-get clean \
@@ -15,7 +17,7 @@ RUN cd /tmp;git clone https://github.com/kti/python-netfilterqueue.git \
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tshark wireshark
 
-RUN pip3 install --process-dependency-links polymorph
+RUN pip3 install --process-dependency-links polymorph==1.0.3
 
 # PATCH for enable spoof command
 COPY utils.patch /usr/local/lib/python3.6/dist-packages/polymorph/
